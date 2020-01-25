@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "sfx.h": "c",
+        "genesis.h": "c",
+        "draw.h": "c",
+        "simplestate.h": "c",
+        "statesplashscreen.h": "c",
+        "statelogoscreen.h": "c",
+        "gamemanager.h": "c",
+        "GamePadUtil.C": "cpp",
+        "hud.h": "c",
+        "stategamescreen.h": "c"
+    }
+}
