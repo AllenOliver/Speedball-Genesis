@@ -51,7 +51,7 @@ int main()
 
     SYS_enableInts();
     SYS_setVIntCallback(VInterrupt);
-    StateMachineStart(&GameMachine, &StateSplashScreen);
+    StateMachineStart(&GameMachine, &StateGameScreen);
 
     while (TRUE)
     {

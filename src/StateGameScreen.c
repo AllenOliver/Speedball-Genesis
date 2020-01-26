@@ -5,6 +5,7 @@
 #include "Ball.h"
 #include "Player.h"
 #include "HUD.h"
+#include "Sound.h"
 #include "../res/sfx.h"
 #include "../res/gfx.h"
 
@@ -25,11 +26,12 @@ int currentSpeed = 1;
 Sprite *impact;
 
 void StateGameScreen_Start(StateMachine *machine, const SimpleState *state)
-{
-    SPR_reset();
-    VDP_setPalette(PAL2, imgball.palette->data); //shares the same palette
+{    
+    ClearAllSprites();
+
+    SetPalette(PAL2, imgball.palette->data); //shares the same palette
     //VDP_setPalette(PAL3, UiPanel.palette->data);
-    VDP_setBackgroundColor(24);
+    SetBackgroundColor(24);
     //VDP_fadeInPal(PAL2, 0, PAL1, PAL2, 60, TRUE);
     playing = TRUE;
     speedcounter = 0;
@@ -43,17 +45,17 @@ void StateGameScreen_Start(StateMachine *machine, const SimpleState *state)
 
     waitTick(100);
     DrawTiles();
-    VDP_setPalette(PAL2, imgball.palette->data);
-    XGM_setPCM(PADDLEHIT, paddlehit, sizeof(paddlehit));
-    XGM_setPCM(WALLHIT, wallhit, sizeof(wallhit));
-    XGM_setPCM(SPEEDUP, speedup, sizeof(speedup));
+
+    InitializeSound(PADDLEHIT, paddlehit);
+    InitializeSound(WALLHIT, wallhit);
+    InitializeSound(SPEEDUP, speedup);
 
     // start music
 
-    XGM_startPlay(LevelMusic);
+    StartBGM(LevelMusic);
     impact = DrawSprite(ImpactParticles, 0, 0, 0, PAL2, FALSE, FALSE);
-    player.sprite = DrawSprite(paddle, player.StartX, player.StartY, PAL2, 0, FALSE, FALSE);
-    ball.sprite = DrawSprite(imgball, ball.StartX, ball.StartY, PAL2, 0, FALSE, FALSE);
+    player.sprite = DrawSprite(paddle, player.StartX, player.StartY, 0, PAL2, FALSE, FALSE);
+    ball.sprite = DrawSprite(imgball, ball.StartX, ball.StartY, 0, PAL2, FALSE, FALSE);
 
     HideSprite(impact);
 }
@@ -83,7 +85,7 @@ void StateGameScreen_End()
     ClearText("Press start to restart!", 2, 16);
     //RemoveHUDSprites();
 
-    XGM_stopPlay(LevelMusic);
+    StopBGM(LevelMusic);
     //VDP_resetSprites();
 }
 
@@ -112,7 +114,7 @@ void moveBall()
     {
         ball.x = LEFT_EDGE + ball.width - 1;
         ball.SpeedX = -ball.SpeedX;
-        XGM_startPlayPCM(WALLHIT, 1, SOUND_PCM_CH2);
+        PlaySound(WALLHIT, 1, SOUND_PCM_CH2);
         ShowParticles(ball.x - 8, ball.y);
         FlipBall();
     }
@@ -120,7 +122,7 @@ void moveBall()
     {
         ball.x = RIGHT_EDGE - ball.width - 1;
         ball.SpeedX = -ball.SpeedX;
-        XGM_startPlayPCM(WALLHIT, 1, SOUND_PCM_CH2);
+        PlaySound(WALLHIT, 1, SOUND_PCM_CH2);
         ShowParticles(ball.x + 8, ball.y);
         FlipBall();
     }
@@ -129,7 +131,7 @@ void moveBall()
     {
         ball.y = TOP_EDGE + ball.height - 1;
         ball.SpeedY = -ball.SpeedY;
-        XGM_startPlayPCM(WALLHIT, 1, SOUND_PCM_CH2);
+        PlaySound(WALLHIT, 1, SOUND_PCM_CH2);
         ShowParticles(ball.x, ball.y - 8);
         FlipBall();
     }
@@ -146,7 +148,7 @@ void moveBall()
         if (ball.y < player.StartY + player.height - 1 && ball.y + ball.height >= player.StartY + 1)
         {
             //XGM_startPlayPCM(PADDLEHIT, 1, SOUND_PCM_CH2);
-            XGM_startPlayPCM(PADDLEHIT, 1, SOUND_PCM_CH3);
+            PlaySound(PADDLEHIT, 1, SOUND_PCM_CH3);
             ball.y = player.StartY - ball.height - 1;
             ball.SpeedY = -ball.SpeedY;
             Score++;
@@ -331,4 +333,38 @@ void ShowParticles(int x, int y)
 {
     particleCounter = 0; //reset counter
     ShowSprite(impact, x, y);
+}
+
+
+/*Fills the screen with tiles 1-by-1*/
+void DrawTiles()
+{
+    for (u16 i = 0; i < 28; i++)
+    {
+        for (u16 j = 0; j < 32; j++)
+        {
+            AddTile(PLAN_B, PAL1, 0, FALSE, FALSE, 1, j, i, 1, 1);
+            waitSubTick(50);
+        }
+    }
+}
+
+/*Removes tiles from the screen 1-by-1*/
+void RemoveTiles()
+{
+    for (u16 i = 0; i < 28; i++)
+    {
+        for (u16 j = 0; j < 40; j++)
+        {
+            ClearTile(PLAN_B, j, i, 1, 1);
+            waitSubTick(50);
+        }
+    }
+}
+
+/*Initializes the game screen tiles*/
+void InitTiles()
+{
+    VDP_loadTileSet(tile.tileset, 1, DMA);
+    VDP_setPalette(PAL1, tile.palette->data); //load into PAL0
 }

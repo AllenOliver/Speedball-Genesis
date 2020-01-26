@@ -9,9 +9,9 @@ Sprite *SegaLogo;
 u16 counter = 0;
 void StateSplashScreen_Start(StateMachine *machine, const SimpleState *state)
 {
-    SPR_reset();
+    ClearAllSprites();
     SegaLogo = DrawSprite(SEGA, 112, (104 - 20), PAL0, 0, FALSE, FALSE);
-    VDP_setPalette(PAL0, SEGA.palette->data);
+    SetPalette(PAL0, SEGA.palette->data);
     SPR_setAnim(SegaLogo, 0);
     DrawText("But not really tho...", 12, 18);
 }

@@ -1,10 +1,10 @@
 #include "Draw.h"
 
-/*Initializes the game screen tiles*/
-void InitTiles()
+//Sprites
+
+void ClearAllSprites()
 {
-    VDP_loadTileSet(tile.tileset, 1, DMA);
-    VDP_setPalette(PAL1, tile.palette->data); //load into PAL0
+    SPR_reset();
 }
 
 void ShowSprite(Sprite *sprite, int x, int y)
@@ -21,32 +21,6 @@ void HideSprite(Sprite *sprite)
 void ReleaseSprite(Sprite *sprite)
 {
     SPR_releaseSprite(sprite);
-}
-
-/*Fills the screen with tiles 1-by-1*/
-void DrawTiles()
-{
-    for (u16 i = 0; i < 28; i++)
-    {
-        for (u16 j = 0; j < 32; j++)
-        {
-            VDP_fillTileMapRect(PLAN_B, TILE_ATTR_FULL(PAL1, 0, FALSE, FALSE, 1), j, i, 1, 1);
-            waitSubTick(50);
-        }
-    }
-}
-
-/*Removes tiles from the screen 1-by-1*/
-void RemoveTiles()
-{
-    for (u16 i = 0; i < 28; i++)
-    {
-        for (u16 j = 0; j < 40; j++)
-        {
-            VDP_clearTileMapRect(PLAN_B, j, i, 1, 1);
-            waitSubTick(50);
-        }
-    }
 }
 
 void DrawText(char *text, u16 x, u16 y)
@@ -73,3 +47,28 @@ void SetVFlip(Sprite *sprite, bool flip)
 {
     SPR_setVFlip(sprite, flip);
 }
+
+//Tilemaps
+
+void ClearTile(VDPPlan plan, s16 x, s16 y, u16 width, u16 height)
+{
+    VDP_clearTileMapRect(plan, x, y, width, height);
+}
+void LoadTileSet(const TileSet *tile, u16 tileSetIndex, TransferMethod method)
+{
+    VDP_loadTileSet(tile, tileSetIndex, method);
+}
+void AddTile(VDPPlan plan, u8 Palette, u8 priority, bool hflip, bool vflip, u8 tileIndex, s16 x, s16 y, u16 width, u16 height)
+{
+    VDP_fillTileMapRect(plan, TILE_ATTR_FULL(Palette, priority, hflip, vflip, tileIndex), x, y, width, height);
+}
+
+void SetBackgroundColor(u8 value)
+{
+    VDP_setBackgroundColor(value);
+}
+void SetPalette(u16 PaletteIndex, const u16 *colorData)
+{
+    VDP_setPalette(PaletteIndex, colorData);
+}
+

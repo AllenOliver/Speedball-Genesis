@@ -110,3 +110,97 @@ void SetVFlip(Sprite *sprite, bool flip);
  *      Sets the sprite's Vertical Flip
  */
 Sprite *DrawSprite(const SpriteDefinition spriteName, s16 x, s16 y, u8 Palette, u8 priority, bool flipX, bool flipY);
+
+/**
+ *  \brief
+ *      Clears all current sprites from memory <br>
+ *      Useful to call on scene changes
+ */
+void ClearAllSprites();
+
+
+//Dealing with tilemaps
+
+/**
+ *  \brief
+ *      Loads a tileset into memory
+ *
+ *  \param tile
+ *      Tile data to load. EX. Tileset.tileset; Defined in the RES file
+ *  \param tileSetIndex
+ *      Tileset index to set this to.
+ *  \param Method
+ *      How the tiles will be loaded. 
+ *      OPTIONS:
+ *      CPU - Loads immediately using the CPU
+ *      DMA - Loads Immediately using DMA; Locks z80
+ *      DMA_Queue - Put in the DMA queue; Will be transferred at next VBlank.
+ */
+void LoadTileSet(const TileSet *tile, u16 tileSetIndex, TransferMethod method);
+
+/**
+ *  \brief
+ *      Clears a tile from the screen
+ *
+ *  \param plan
+ *      TThe window plan the tile is a part of.
+ *  \param x
+ *      X position on screen
+ *  \param y
+ *      Y position on screen 
+ *  \param width
+ *      Width of the sprite
+ *  \param height
+ *      Height of the sprite
+ */
+void ClearTile(VDPPlan plan, s16 x, s16 y, u16 width, u16 height);
+
+
+/**
+ *  \brief
+ *      Adds A tile to memory; Draws it.
+ *
+ *  \param plan
+ *      The window plan the tile is a part of.
+ *  \param Palette
+ *      The Palette colors to use
+ *      OPTIONS:
+ *      PAL0 - PAL3
+ *  \param priority
+ *      Set the tile's priority. Higher numbers render on top.
+ *  \param hflip
+ *      flips the sprite horizontally
+ *  \param yflip
+ *      flips the sprite vertically
+ *  \param tileIndex
+ *      Index of this tileset
+ *  \param x
+ *      X position on screen
+ *  \param y
+ *      Y position on screen 
+ *  \param width
+ *      Width of the sprite
+ *  \param height
+ *      Height of the sprite
+ */
+void AddTile(VDPPlan plan, u8 Palette, u8 priority, bool hflip, bool vflip, u8 tileIndex, s16 x, s16 y, u16 width, u16 height);
+
+//Dealing with colors
+
+/**
+ *  \brief
+ *      Sets the window background color
+ *
+ *  \param value
+ *      Palette number to set it to.
+ */
+void SetBackgroundColor(u8 value);
+
+/**
+ *  \brief
+ *      Sets a specific VDP Palette
+ *
+ *  \param PaletteIndex
+ *      Palette index to set color data to. PAL0-PAL3
+ */
+void SetPalette(u16 PaletteIndex, const u16 *colorData);

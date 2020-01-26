@@ -3,7 +3,8 @@
 
 void StateMachineStart(StateMachine* machine, const SimpleState* state)
 {
-	VDP_setPlanSize(64,64);
+	    VDP_setPlanSize(64, 64);
+
     SPR_init();
 	if (state != 0 && machine != 0)
 	{
@@ -33,7 +34,6 @@ void StateMachineUpdate(StateMachine* machine)
 			
 			
 			machine->CurrentState = machine->ChangeTo;
-			waitSubTick(1000);
 			machine->CurrentState->Start();
 			
 			machine->ChangeTo = 0;

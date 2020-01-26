@@ -10,8 +10,8 @@ Sprite *logoSprite[4];
 void StateLogoScreen_Start(StateMachine *machine, const SimpleState *state)
 {
     counter = 0;
-    VDP_setPalette(PAL2, LogoOne.palette->data);
-    SPR_reset();
+    SetPalette(PAL2, LogoOne.palette->data);
+    ClearAllSprites();
     logoSprite[0] = DrawSprite(LogoOne, ((320 / 2) - 64), 8, PAL2, 0, FALSE, FALSE);
     logoSprite[1] = DrawSprite(LogoTwo, (320 / 2), 8, PAL2, 0, FALSE, FALSE);
     logoSprite[2] = DrawSprite(LogoThree, ((320 / 2) - 64), 72, PAL2, 0, FALSE, FALSE);

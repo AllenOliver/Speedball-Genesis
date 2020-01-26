@@ -24,6 +24,9 @@ void ShowParticles(int x, int y);
 void ResetPlayer();
 void ResetScore();
 void FlipBall();
+void InitTiles();
+void RemoveTiles();
+void DrawTiles();
 
 const extern SimpleState StateGameScreen;
 #endif

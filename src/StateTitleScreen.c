@@ -1,6 +1,7 @@
 #include "StateTitleScreen.h"
 #include "GameManager.h"
 #include "Draw.h"
+#include "Sound.h"
 #include "StateGameScreen.h"
 #include "../res/gfx.h"
 #include "../res/sfx.h"
@@ -17,20 +18,20 @@ u16 colorIndex;
 float TitleScrollSpeed = .3f;
 void StateTitleScreen_Start(StateMachine *machine, const SimpleState *state)
 {
-    SPR_reset();
-    VDP_setPalette(PAL1, DepthBGOne.palette->data);
-    VDP_setBackgroundColor(24);
-    XGM_startPlay(TitleMusic);
+    ClearAllSprites();
+    SetPalette(PAL1, DepthBGOne.palette->data);
+    SetBackgroundColor(24);
+    StartBGM(TitleMusic);
 
-    VDP_loadTileSet(TitleScreenTile.tileset, 2, DMA);
-    VDP_setPalette(PAL2, tile.palette->data); //load into PAL2
+    LoadTileSet(TitleScreenTile.tileset, 2, DMA);
+    SetPalette(PAL2, tile.palette->data); //load into PAL2
 
     //Load them into screen
     for (u16 i = 0; i < 22; i++) //Half the screen; plus one for overflow
     {
         for (u16 j = 0; j < 64; j++)
         {
-            VDP_fillTileMapRect(PLAN_B, TILE_ATTR_FULL(PAL1, 0, FALSE, FALSE, 2), j, i, 1, 1);
+            AddTile(PLAN_B, PAL1, 0, FALSE, FALSE, 2, j, i, 1, 1);
         }
     }
 
@@ -87,10 +88,10 @@ void StateTitleScreen_End()
     {
         for (u16 j = 0; j < 64; j++)
         {
-            VDP_clearTileMapRect(PLAN_B, j, i, 1, 1);
+            ClearTile(PLAN_B, j, i, 1, 1);
         }
     }
-    XGM_stopPlay(TitleMusic);
+    StopBGM(TitleMusic);
 }
 
 const SimpleState StateTitleScreen =
