@@ -33,10 +33,6 @@ void StateLogoScreen_End()
 {
     counter = 0;
     ClearText(text, 10, 18);
-    ReleaseSprite(logoSprite[0]);
-    ReleaseSprite(logoSprite[1]);
-    ReleaseSprite(logoSprite[2]);
-    ReleaseSprite(logoSprite[3]);
 }
 
 const SimpleState StateLogoScreen =

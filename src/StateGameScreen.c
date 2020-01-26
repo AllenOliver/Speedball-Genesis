@@ -26,6 +26,7 @@ Sprite *impact;
 
 void StateGameScreen_Start(StateMachine *machine, const SimpleState *state)
 {
+    SPR_reset();
     VDP_setPalette(PAL2, imgball.palette->data); //shares the same palette
     //VDP_setPalette(PAL3, UiPanel.palette->data);
     VDP_setBackgroundColor(24);
@@ -42,7 +43,7 @@ void StateGameScreen_Start(StateMachine *machine, const SimpleState *state)
 
     waitTick(100);
     DrawTiles();
-
+    VDP_setPalette(PAL2, imgball.palette->data);
     XGM_setPCM(PADDLEHIT, paddlehit, sizeof(paddlehit));
     XGM_setPCM(WALLHIT, wallhit, sizeof(wallhit));
     XGM_setPCM(SPEEDUP, speedup, sizeof(speedup));
@@ -51,8 +52,8 @@ void StateGameScreen_Start(StateMachine *machine, const SimpleState *state)
 
     XGM_startPlay(LevelMusic);
     impact = DrawSprite(ImpactParticles, 0, 0, 0, PAL2, FALSE, FALSE);
-    player.sprite = DrawSprite(paddle, player.StartX, player.StartY, 0, PAL2, FALSE, FALSE);
-    ball.sprite = DrawSprite(imgball, ball.StartX, ball.StartY, 0, PAL2, FALSE, FALSE);
+    player.sprite = DrawSprite(paddle, player.StartX, player.StartY, PAL2, 0, FALSE, FALSE);
+    ball.sprite = DrawSprite(imgball, ball.StartX, ball.StartY, PAL2, 0, FALSE, FALSE);
 
     HideSprite(impact);
 }
@@ -80,10 +81,10 @@ void StateGameScreen_End()
     ClearText("You Lose!", 12, 10);
     ClearText("You died.", 6, 15);
     ClearText("Press start to restart!", 2, 16);
-    RemoveHUDSprites();
+    //RemoveHUDSprites();
 
     XGM_stopPlay(LevelMusic);
-    VDP_resetSprites();
+    //VDP_resetSprites();
 }
 
 void StateGameScreen_VInterrupt()

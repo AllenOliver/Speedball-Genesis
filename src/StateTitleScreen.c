@@ -82,11 +82,6 @@ void StateTitleScreen_End()
     ClearText(PressStart, 12, 22);
     ClearText("Allen Oliver 2020", 10, 26);
     ClearText("V 0.5", 3, 26);
-    ReleaseSprite(titleLogo);
-    ReleaseSprite(Background[0]);
-    ReleaseSprite(Background[1]);
-    ReleaseSprite(Background[2]);
-    ReleaseSprite(Background[3]);
 
     for (u16 i = 0; i < 22; i++) //Half the screen; plus one for overflow
     {

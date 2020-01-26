@@ -29,7 +29,6 @@ void StateSplashScreen_End()
 {
     counter = 0;
     ClearText("But not really tho...", 12, 18);
-    ReleaseSprite(SegaLogo);
 }
 
 const SimpleState StateSplashScreen =
